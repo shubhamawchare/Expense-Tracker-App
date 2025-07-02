@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ExpenseTrackerApp.Models.Expense>
+@{
+    ViewData["Title"] = "Expenses";
+    var totalAmount = Model.Sum(e => e.Amount);
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">Expense Tracker</h2>
+        <div>
+            <a class="btn btn-primary" asp-action="Create">+ Add Expense</a>
+            <a class="btn btn-outline-info ms-2" asp-action="Chart">📊 View Chart</a>
+        </div>
+    </div>
+
+    <div class="card p-3 shadow-sm mb-3">
+        <h5>Total Expenses: <span class="text-success fw-bold">£@totalAmount.ToString("F2")</span></h5>
+    </div>
+
+    <table class="table table-striped table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Description</th>
+                <th>Amount (£)</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Description</td>
+                    <td class="fw-bold text-danger">£@item.Amount.ToString("F2")</td>
+                    <td>
+                        <span class="badge bg-secondary">@item.Category</span>
+                    </td>
+                    <td>@item.Date.ToString("dd MMM yyyy")</td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">🗑 Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
